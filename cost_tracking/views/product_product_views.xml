@@ -1,0 +1,13 @@
+<odoo>
+	<record id="view_product_product_inherit_realistic" model="ir.ui.view">
+		<field name="name">product.product.form.inherit.realistic</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="product.product_normal_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@name='button_box']" position="inside">
+				<button name="action_view_cost_history" type="object" class="oe_stat_button" icon="fa-history" string="Cost History"/>
+				<button name="action_view_serial_costs" type="object" class="oe_stat_button" icon="fa-list-ol" string="Serials Costs"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

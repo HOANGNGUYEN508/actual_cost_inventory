@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_category_technical_seen,Product Category Technical User,model_product_category_technical,access_group_seen_product_category_technical,1,0,0,0
+access_product_category_technical_use,Product Category Technical Manager,model_product_category_technical,access_group_use_product_category_technical,1,1,1,1

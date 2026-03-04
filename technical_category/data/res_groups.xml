@@ -1,0 +1,12 @@
+<odoo>
+	<data noupdate="1">
+		<record id="access_group_seen_product_category_technical" model="res.groups">
+			<field name="name">Right to read the product category technical</field>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		</record>
+		<record id="access_group_use_product_category_technical" model="res.groups">
+			<field name="name">Right to manage the product category technical</field>
+			<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+		</record>
+	</data>
+</odoo>

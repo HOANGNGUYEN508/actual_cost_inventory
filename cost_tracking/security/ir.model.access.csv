@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_cost_history_seen,Product Cost History User,model_product_cost_history,access_group_seen_product_cost_history,1,0,0,0
+access_product_cost_history_use,Product Cost History Manager,model_product_cost_history,access_group_use_product_cost_history,1,1,1,1

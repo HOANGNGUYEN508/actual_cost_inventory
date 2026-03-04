@@ -1,0 +1,36 @@
+<odoo>
+	<data noupdate="1">
+		<!-- Create the categories first -->
+		<record id="product_category_account_standard" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">Standard - Real Time</field>
+		</record>
+
+		<record id="product_category_account_fifo" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">FIFO - Real Time</field>
+		</record>
+
+		<record id="product_category_account_avco" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">AVCO - Real Time</field>
+		</record>
+
+		<record id="product_category_account_sn_avco" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">SN AVCO - Real Time</field>
+		</record>
+
+		<record id="product_category_account_standard_manual" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">Standard - Manual</field>
+		</record>
+
+		<record id="product_category_account_fifo_manual" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">FIFO - Manual</field>
+		</record>
+
+		<record id="product_category_account_avco_manual" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">AVCO - Manual</field>
+		</record>
+
+		<record id="product_category_account_sn_avco_manual" model="product.category" context="{'bypass_protection': True}">
+			<field name="name">SN AVCO - Manual</field>
+		</record>
+	</data>
+</odoo>

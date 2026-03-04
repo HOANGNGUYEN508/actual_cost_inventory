@@ -1,0 +1,183 @@
+<odoo>
+	<!-- Tree View -->
+	<record id="view_product_cost_history_tree" model="ir.ui.view">
+		<field name="name">product.cost.history.tree</field>
+		<field name="model">product.cost.history</field>
+		<field name="arch" type="xml">
+			<list string="Cost History" create="0" edit="0" decoration-success="price_change &gt; 0" decoration-danger="price_change &lt; 0" decoration-muted="price_change == 0">
+				<field name="create_date" string="Date"/>
+				<field name="product_tmpl_id" string="Product"/>
+				<field name="product_id" string="Variant"/>
+				<field name="cost_method" string="Method" optional="show"/>
+				<field name="old_price" widget="monetary"/>
+				<field name="new_price" widget="monetary"/>
+				<field name="price_change" widget="monetary"/>
+				<field name="price_change_percent" string="Change %" widget="percentage"/>
+				<field name="units_in_stock" string="Units"/>
+				<field name="total_value" widget="monetary" optional="hide"/>
+				<field name="reason"/>
+				<field name="reference" optional="show"/>
+				<field name="user_id" widget="many2one_avatar_user" optional="hide"/>
+				<field name="company_id" optional="hide"/>
+				<field name="currency_id" column_invisible="1"/>
+			</list>
+		</field>
+	</record>
+
+	<!-- Form View -->
+	<record id="view_product_cost_history_form" model="ir.ui.view">
+		<field name="name">product.cost.history.form</field>
+		<field name="model">product.cost.history</field>
+		<field name="arch" type="xml">
+			<form string="Cost History" create="0" edit="0" delete="0">
+				<sheet>
+					<div class="oe_title">
+						<label for="product_id" class="oe_edit_only"/>
+						<h1>
+							<field name="product_id" readonly="1"/>
+						</h1>
+						<h2>
+							<field name="product_tmpl_id" readonly="1"/>
+						</h2>
+					</div>
+
+					<group>
+						<group name="cost_info" string="Cost Change">
+							<field name="cost_method" string="Costing Method"/>
+							<field name="old_price" widget="monetary"/>
+							<field name="new_price" widget="monetary"/>
+							<field name="price_change" widget="monetary" decoration-success="price_change &gt; 0" decoration-danger="price_change &lt; 0"/>
+							<field name="price_change_percent" widget="percentage" decoration-success="price_change_percent &gt; 0" decoration-danger="price_change_percent &lt; 0"/>
+							<field name="currency_id" invisible="1"/>
+						</group>
+
+						<group name="context_info" string="Context">
+							<field name="units_in_stock"/>
+							<field name="total_value" widget="monetary"/>
+							<field name="reason"/>
+							<field name="reference"/>
+							<field name="user_id" widget="many2one_avatar_user"/>
+							<field name="create_date" string="Changed On"/>
+							<field name="company_id"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<!-- Search View -->
+	<record id="view_product_cost_history_search" model="ir.ui.view">
+		<field name="name">product.cost.history.search</field>
+		<field name="model">product.cost.history</field>
+		<field name="arch" type="xml">
+			<search string="Cost History">
+				<field name="product_tmpl_id" string="Product"/>
+				<field name="product_id" string="Variant"/>
+				<field name="cost_method"/>
+				<field name="reason"/>
+				<field name="reference"/>
+				<field name="user_id"/>
+
+				<separator/>
+
+				<!-- Date Filters -->
+				<filter string="Last 7 Days" name="last_7_days" domain="[('is_last_7_days', '=', True)]"/>
+				<filter string="Last 30 Days" name="last_30_days" domain="[('is_last_30_days', '=', True)]"/>
+				<filter string="This Month" name="this_month" domain="[('is_this_month', '=', True)]"/>
+				<filter string="This Year" name="this_year" domain="[('is_this_year', '=', True)]"/>
+
+				<!-- Price Change Filters -->
+				<filter string="Price Increased" name="price_increased" domain="[('is_increase', '=', True)]"/>
+				<filter string="Price Decreased" name="price_decreased" domain="[('is_decrease', '=', True)]"/>
+				<filter string="No Price Change" name="no_price_change" domain="[('is_no_change', '=', True)]"/>
+
+				<!-- Cost Method Filters -->
+				<filter string="Standard" name="filter_standard" domain="[('cost_method', '=', 'standard')]"/>
+				<filter string="AVCO" name="filter_average" domain="[('cost_method', '=', 'average')]"/>
+				<filter string="FIFO" name="filter_fifo" domain="[('cost_method', '=', 'fifo')]"/>
+
+				<!-- Reason Filters -->
+				<filter string="Receipt" name="from_receipt" domain="[('reason', '=', 'receipt')]"/>
+				<filter string="Delivery" name="from_delivery" domain="[('reason', '=', 'delivery')]"/>
+				<filter string="Return" name="from_return" domain="[('reason', '=', 'return')]"/>
+				<filter string="Inventory Adjustment" name="from_adjustment" domain="[('reason', '=', 'adjustment')]"/>
+				<filter string="Manual Update" name="manual" domain="[('reason', '=', 'manual')]"/>
+
+
+				<!-- Group By -->
+				<filter string="Product" name="group_template" context="{'group_by': 'product_tmpl_id'}"/>
+				<filter string="Variant" name="group_variant" context="{'group_by': 'product_id'}"/>
+				<filter string="Cost Method" name="group_cost_method" context="{'group_by': 'cost_method'}"/>
+				<filter string="Reason" name="group_reason" context="{'group_by': 'reason'}"/>
+				<filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+
+				<filter string="Day" name="group_date_day" context="{'group_by': 'create_date:day'}"/>
+				<filter string="Week" name="group_date_week" context="{'group_by': 'create_date:week'}"/>
+				<filter string="Month" name="group_date_month" context="{'group_by': 'create_date:month'}"/>
+				<filter string="Year" name="group_date_year" context="{'group_by': 'create_date:year'}"/>
+			</search>
+		</field>
+	</record>
+
+	<record id="view_product_cost_history_graph" model="ir.ui.view">
+		<field name="name">product.cost.history.graph</field>
+		<field name="model">product.cost.history</field>
+		<field name="arch" type="xml">
+			<graph string="Cost Progression Over Time" type="line" sample="1">
+				<field name="create_date" interval="day"/>
+				<!-- X axis -->
+				<field name="product_id"/>
+				<!-- Series (one line per product) -->
+				<field name="new_price" string="Cost" type="measure" widget="monetary"/>
+				<!-- Y axis -->
+			</graph>
+		</field>
+	</record>
+
+	<!-- Pivot View - Price History Analysis -->
+	<record id="view_product_cost_history_pivot" model="ir.ui.view">
+		<field name="name">product.cost.history.pivot</field>
+		<field name="model">product.cost.history</field>
+		<field name="arch" type="xml">
+			<pivot string="Cost History — Price Drift" sample="1">
+				<field name="product_id" type="row"/>
+				<field name="create_date" interval="day" type="col"/>
+				<field name="new_price" string="Cost" type="measure" widget="monetary"/>
+				<field name="price_change" string="Change" type="measure" widget="monetary"/>
+				<field name="total_value" string="Inventory Value" type="measure" widget="monetary"/>
+			</pivot>
+		</field>
+	</record>
+
+	<!-- Action with Multiple Views -->
+	<record id="action_product_cost_history" model="ir.actions.act_window">
+		<field name="name">Cost History</field>
+		<field name="res_model">product.cost.history</field>
+		<field name="view_mode">list,form,graph,pivot</field>
+		<field name="domain">[('company_id', 'in', allowed_company_ids)]</field>
+		<field name="context">{"search_default_last_30_days": 1}</field>
+		<field name="search_view_id" ref="view_product_cost_history_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">No cost history records found</p>
+			<p>Cost history automatically tracks ALL changes to product costs across all costing methods (Standard, FIFO, AVCO and SN AVCO).</p>
+			<p>History is created when:
+				<ul>
+					<li>
+						<strong>Receipts:</strong> Goods are received (new stock added).</li>
+					<li>
+						<strong>Deliveries:</strong> Goods are delivered (stock removed).</li>
+					<li>
+						<strong>Returns:</strong> Customer returns or supplier returns.</li>
+					<li>
+						<strong>Adjustments:</strong> Inventory adjustments are made.</li>
+					<li>
+						<strong>Manual:</strong> Manual cost adjustments made by internal users.</li>
+				</ul>
+			</p>
+			<p>Use filters to compare cost methods, analyze trends, and track audit trail.</p>
+		</field>
+	</record>
+
+	<menuitem id="menu_product_cost_history_root" name="Cost History" parent="stock.menu_warehouse_report" action="action_product_cost_history" sequence="101" />
+</odoo>
