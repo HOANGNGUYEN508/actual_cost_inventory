@@ -464,9 +464,13 @@ New model:
 ## Support & Maintenance
 
 **Version**: 1.0.0  
-**License**: LGPL-3  
+**License**: Proprietary  
 **Author**: Nguyen Cao Hoang  
 **Maintained**: Active development  
+
+---
+
+© 2026 Nguyen Cao Hoang. All rights reserved. Unauthorized use, reproduction, or distribution is prohibited without explicit written permission from the copyright owner.
 
 ### File Structure
 ```
