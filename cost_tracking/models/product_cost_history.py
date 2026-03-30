@@ -73,13 +73,6 @@ class ProductCostHistory(models.Model):
     is_increase = fields.Boolean("Price Increased", search="_search_is_increase", store=False)
     is_decrease = fields.Boolean("Price Decreased", search="_search_is_decrease", store=False)
     is_no_change = fields.Boolean("No Price Change", search="_search_is_no_change", store=False)
-    
-    company_id = fields.Many2one(
-        "res.company",
-        string="Company",
-        required=True,
-        ondelete="restrict",
-    )
 
     @api.depends("old_price", "new_price")
     def _compute_price_change(self):
