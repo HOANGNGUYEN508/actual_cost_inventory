@@ -52,7 +52,12 @@ class ProductCostHistory(models.Model):
 
     currency_id = fields.Many2one("res.currency", default=lambda self: self.env.company.currency_id)
     user_id = fields.Many2one("res.users", "Changed By", default=lambda self: self.env.user)
-    company_id = fields.Many2one("res.company", related="product_tmpl_id.company_id", store=True)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        ondelete="restrict",
+    )
 
     # Computed fields
     price_change = fields.Monetary(
@@ -199,7 +204,7 @@ class ProductCostHistory(models.Model):
     @api.model
     def log_cost_change(
         self, product, old_price, new_price, reason, reference=None, units_in_stock=0.0,
-        total_value=0.0
+        total_value=0.0, company=None
     ):
         if not product or len(product) != 1:
             _logger.warning("log_cost_change requires exactly one product, got: %s", product)
@@ -210,7 +215,7 @@ class ProductCostHistory(models.Model):
             cost_method = self._get_cost_method(product)
 
             # ALWAYS create history entry for complete audit trail
-            history = self.create({
+            history = self.sudo().create({
                 "product_id": product.id,
                 "product_tmpl_id": product.product_tmpl_id.id,
                 "old_price": old_price,
@@ -220,7 +225,7 @@ class ProductCostHistory(models.Model):
                 "units_in_stock": units_in_stock,
                 "total_value": total_value,
                 "cost_method": cost_method,
-                "company_id": self.env.company.id,
+                "company_id": (company or product.company_id or self.env.company).id,
             })
 
             # Log based on whether price actually changed (debugging purposes)

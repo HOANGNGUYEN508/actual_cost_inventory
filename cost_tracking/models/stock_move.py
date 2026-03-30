@@ -84,17 +84,18 @@ class StockMove(models.Model):
                         reason = "delivery"
 
                 # Compute current internal stock for the product AFTER moves were processed
-                quants = self.env["stock.quant"].search([
+                quants = self.env["stock.quant"].sudo().search([
                     ("product_id", "=", product.id),
                     ("quantity", ">", 0),
                     ("location_id.usage", "=", "internal"),
+                    ("company_id", "=", first_move.company_id.id),
                 ])
                 total_qty = sum(quants.mapped("quantity")) if quants else 0.0
                 new_price = float(product.standard_price or 0.0)
                 total_value = new_price * total_qty
 
                 # Call the centralized logger (creates the history record)
-                self.env["product.cost.history"].log_cost_change(
+                self.env["product.cost.history"].sudo().log_cost_change(
                     product=product,
                     old_price=data.get("old_price", 0.0),
                     new_price=new_price,
@@ -102,6 +103,7 @@ class StockMove(models.Model):
                     reference=reference,
                     units_in_stock=total_qty,
                     total_value=total_value,
+                    company=first_move.company_id,
                 )
 
             except Exception as e:
